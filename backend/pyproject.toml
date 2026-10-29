@@ -1,0 +1,17 @@
+[project]
+name = "moteursentinelle"
+version = "1.0.0"
+description = "MoteurSentinelle — Moteur de diagnostic électromécanique et API"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.110.0",
+    "uvicorn>=0.28.0",
+    "pydantic>=2.6.0",
+    "python-multipart>=0.0.9",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+python_files = ["test_*.py"]

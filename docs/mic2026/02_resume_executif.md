@@ -1,0 +1,7 @@
+# Résumé Exécutif — MoteurSentinelle (Strictement 172 mots)
+
+MoteurSentinelle est une application web d'aide à la décision et de formation dédiée au diagnostic des moteurs électriques asynchrones triphasés, conçue pour l'Afrique francophone et particulièrement le Sénégal. Face à la criticité des arrêts machines industriels et aux difficultés rencontrées par les étudiants et techniciens débutants pour interpréter des anomalies complexes (échauffement, vibrations, déclenchements intempestifs), MoteurSentinelle propose un parcours de diagnostic guidé et méthodique.
+
+Son cœur technologique repose sur un moteur de règles électromécaniques déterministe et entièrement explicable, rejetant l’opacité des modèles d'intelligence artificielle non vérifiés. Pour chaque anomalie, l'application fournit des hypothèses hiérarchisées, justifie leur pertinence, expose les données manquantes et prescrit les contrôles complémentaires sécurisés selon les règles de consignation électrique.
+
+La plateforme intègre également un simulateur pédagogique de cinq dysfonctionnements majeurs, une gestion d’historique des interventions et une bibliothèque technique industrielle. Développée selon les principes de sobriété numérique, MoteurSentinelle fonctionne de manière fluide sur ordinateurs et smartphones, même avec une connectivité internet instable. MoteurSentinelle renforce ainsi les compétences locales, prévient les pannes destructives et structure durablement la maintenance industrielle.

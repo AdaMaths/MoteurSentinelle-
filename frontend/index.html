@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoteurSentinelle — Diagnostic Électromécanique & Fiabilité</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="app-header">
+        <div class="header-container">
+            <div class="brand">
+                <span class="brand-icon">⚡</span>
+                <div class="brand-text">
+                    <h1>MoteurSentinelle</h1>
+                    <span class="badge-sub">Aide à la décision & Maintenance industrielle — Sénégal / Afrique de l'Ouest</span>
+                </div>
+            </div>
+            <div class="system-status" id="system-status">
+                <span class="status-indicator"></span>
+                <span id="status-text">Mode Autonome</span>
+            </div>
+        </div>
+        <nav class="nav-bar">
+            <button class="nav-btn active" data-tab="tab-dashboard">📊 Tableau de bord</button>
+            <button class="nav-btn" data-tab="tab-diagnostic">🔍 Diagnostic Guidé</button>
+            <button class="nav-btn" data-tab="tab-simulator">🧪 Simulateur Pédagogique</button>
+            <button class="nav-btn" data-tab="tab-motors">⚙️ Fiches Moteurs</button>
+            <button class="nav-btn" data-tab="tab-history">📋 Historique & Rapports</button>
+            <button class="nav-btn" data-tab="tab-knowledge">📚 Bibliothèque Technique</button>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <!-- TAB 1 : DASHBOARD -->
+        <section id="tab-dashboard" class="tab-pane active">
+            <div class="section-title">
+                <h2>Vue d'ensemble de la maintenance</h2>
+                <p>Indicateurs de fiabilité calculés sur les données réelles et enregistrées.</p>
+            </div>
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <span class="kpi-title">Moteurs sous surveillance</span>
+                    <span class="kpi-value" id="kpi-motors">1</span>
+                    <span class="kpi-hint">Parc répertorié</span>
+                </div>
+                <div class="kpi-card">
+                    <span class="kpi-title">Diagnostics réalisés</span>
+                    <span class="kpi-value" id="kpi-diags">0</span>
+                    <span class="kpi-hint">Analyses enregistrées</span>
+                </div>
+                <div class="kpi-card alert-card">
+                    <span class="kpi-title">Signature dominante</span>
+                    <span class="kpi-value kpi-highlight" id="kpi-symptom">Échauffement</span>
+                    <span class="kpi-hint">Risque thermique majeur</span>
+                </div>
+            </div>
+
+            <div class="dashboard-columns">
+                <div class="card">
+                    <h3>⚡ Derniers diagnostics enregistrés</h3>
+                    <div id="dashboard-recent-diags" class="list-container">
+                        <p class="empty-state">Aucun diagnostic récent. Lancez une analyse guidée.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>⚠️ Règles de sécurité fondamentales (NF C 18-510)</h3>
+                    <div class="safety-banner">
+                        <p><strong>RAPPEL OBLIGATOIRE :</strong> Toute intervention sur la boîte à bornes ou l'accouplement nécessite l'application stricte des 5 étapes de la consignation électrique.</p>
+                        <ul class="clean-list">
+                            <li>1. Séparation visible de la source d'énergie</li>
+                            <li>2. Condamnation par cadenas de consignation</li>
+                            <li>3. Identification du circuit</li>
+                            <li>4. Vérification d'Absence de Tension (VAT)</li>
+                            <li>5. Mise à la terre et en court-circuit</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2 : DIAGNOSTIC GUIDÉ -->
+        <section id="tab-diagnostic" class="tab-pane">
+            <div class="section-title">
+                <h2>Parcours de Diagnostic Méthodique</h2>
+                <p>Analyse explicable par moteur de règles déterministe.</p>
+            </div>
+
+            <div class="card">
+                <h3>1. Moteur & Technicien</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Moteur à diagnostiquer :</label>
+                        <select id="diag-motor-select" class="form-control">
+                            <option value="MOT-SN-001">MOT-SN-001 — Broyeur Principal Rufisque (11 kW - 400V)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Nom du technicien :</label>
+                        <input type="text" id="diag-tech-name" class="form-control" value="Technicien Atelier">
+                    </div>
+                </div>
+
+                <h3>2. Symptômes directement observés</h3>
+                <div class="checkbox-grid">
+                    <label class="check-item"><input type="checkbox" name="symptom" value="echauffement_anormal"> 🔥 Échauffement anormal carcasse</label>
+                    <label class="check-item"><input type="checkbox" name="symptom" value="vibration_excessive"> 📳 Vibrations anormales</label>
+                    <label class="check-item"><input type="checkbox" name="symptom" value="bruit_anormal"> 🔊 Bruit de roulement / frottement</label>
+                    <label class="check-item"><input type="checkbox" name="symptom" value="grognement"> ⚡ Grognement électromagnétique (100 Hz)</label>
+                    <label class="check-item"><input type="checkbox" name="symptom" value="declenchement_protection"> 🛑 Déclenchement disjoncteur / thermique</label>
+                    <label class="check-item"><input type="checkbox" name="symptom" value="odeur_brule"> ♨️ Odeur d'isolant brûlé</label>
+                </div>
+
+                <h3>3. Contexte opérationnel</h3>
+                <div class="checkbox-grid">
+                    <label class="check-item"><input type="checkbox" id="ctx-capot-obstrue"> 💨 Capot / ailettes très empoussiérés</label>
+                    <label class="check-item"><input type="checkbox" id="ctx-charge-bloquee"> ⚙️ Point dur sur la machine entraînée</label>
+                    <label class="check-item"><input type="checkbox" id="ctx-reseau-instable"> ⚡ Réseau électrique sujet aux baisses de tension</label>
+                    <label class="check-item"><input type="checkbox" id="ctx-manque-graissage"> 🛢️ Roulements non graissés depuis > 6 mois</label>
+                </div>
+
+                <button type="button" class="btn btn-primary" id="btn-run-diag" style="margin-top:15px;">Lancer l'analyse explicable 🔍</button>
+            </div>
+
+            <div id="diagnostic-results-container" class="card hidden">
+                <!-- Rempli par JavaScript -->
+            </div>
+        </section>
+
+        <!-- TAB 3 : SIMULATEUR PÉDAGOGIQUE -->
+        <section id="tab-simulator" class="tab-pane">
+            <div class="section-title">
+                <h2>Simulateur Électromécanique Pédagogique</h2>
+                <p>Comprendre la signature physique des pannes courantes. <span class="tag-warning">SIMULÉES — NON ISSUES DE MESURES RÉELLES</span></p>
+            </div>
+
+            <div class="simulator-layout">
+                <div class="card sim-controls">
+                    <h3>Sélection du scénario didactique</h3>
+                    <div class="form-group">
+                        <label for="sim-scenario-select">Scénario de panne :</label>
+                        <select id="sim-scenario-select" class="form-control">
+                            <option value="nominal">1. Fonctionnement Nominal Normal</option>
+                            <option value="surcharge">2. Surcharge Mécanique Progressive</option>
+                            <option value="ventilation">3. Défaut de Ventilation / Encrassement</option>
+                            <option value="roulement">4. Dégradation Mécanique de Roulement</option>
+                            <option value="desequilibre">5. Déséquilibre de Tension Triphasée</option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-primary btn-block" id="btn-simulate">Exécuter la simulation</button>
+                </div>
+
+                <div class="card sim-outputs">
+                    <h3>Indicateurs Physiques Didactiques</h3>
+                    <div class="metrics-row">
+                        <div class="metric-box">
+                            <span class="metric-label">Courant de ligne</span>
+                            <span class="metric-val" id="sim-val-current">-- A</span>
+                        </div>
+                        <div class="metric-box">
+                            <span class="metric-label">Vitesse rotorique</span>
+                            <span class="metric-val" id="sim-val-speed">-- tr/min</span>
+                        </div>
+                        <div class="metric-box">
+                            <span class="metric-label">Température carcasse</span>
+                            <span class="metric-val" id="sim-val-temp">-- °C</span>
+                        </div>
+                        <div class="metric-box">
+                            <span class="metric-label">Vibration globale RMS</span>
+                            <span class="metric-val" id="sim-val-vib">-- mm/s</span>
+                        </div>
+                    </div>
+                    <div class="sim-explanation-box">
+                        <h4>Interprétation Pédagogique</h4>
+                        <p id="sim-explanation-text">Sélectionnez un scénario pour visualiser le comportement électromécanique attendu.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4 : FICHES MOTEURS -->
+        <section id="tab-motors" class="tab-pane">
+            <div class="section-title">
+                <h2>Fiches Techniques Moteurs</h2>
+                <p>Inventaire du parc électromécanique et caractéristiques de plaque signalétique.</p>
+            </div>
+            <div class="card">
+                <h3>Parc moteurs enregistré</h3>
+                <div id="motors-list-container" class="table-responsive"></div>
+            </div>
+        </section>
+
+        <!-- TAB 5 : HISTORIQUE -->
+        <section id="tab-history" class="tab-pane">
+            <div class="section-title">
+                <h2>Historique des Diagnostics & Rapports Techniques</h2>
+                <p>Traçabilité des anomalies et génération de fiches imprimables.</p>
+            </div>
+            <div class="card">
+                <div id="history-table-container" class="table-responsive"></div>
+            </div>
+        </section>
+
+        <!-- TAB 6 : BIBLIOTHÈQUE TECHNIQUE -->
+        <section id="tab-knowledge" class="tab-pane">
+            <div class="section-title">
+                <h2>Bibliothèque Technique & Didactique</h2>
+                <p>Guides de maintenance, sécurité et diagnostic des moteurs asynchrones triphasés.</p>
+            </div>
+            <div class="knowledge-grid">
+                <div class="knowledge-card">
+                    <span class="knowledge-tag">Sécurité Électrique</span>
+                    <h4>Consignation en 5 Étapes (NF C 18-510)</h4>
+                    <p>Procédure obligatoire : 1. Séparation, 2. Condamnation par cadenas, 3. Identification, 4. VAT avec vérificateur normalisé, 5. Mise à la terre.</p>
+                </div>
+                <div class="knowledge-card">
+                    <span class="knowledge-tag">Diagnostic Thermique</span>
+                    <h4>Échauffement & Classes d'Isolation</h4>
+                    <p>Classe F : échauffement admissible de 105 K. Toute hausse de 10°C au-delà de la limite divise par deux la durée de vie du vernis isolant.</p>
+                </div>
+                <div class="knowledge-card">
+                    <span class="knowledge-tag">Analyse Vibratoire</span>
+                    <h4>Norme ISO 10816-3</h4>
+                    <p>Pour moteurs 15 à 75 kW sur massif rigide : Zone A (<1.4 mm/s), Zone B (bon, 1.4 à 2.8 mm/s), Zone C (alerte, 2.8 à 4.5 mm/s), Zone D (danger, >4.5 mm/s).</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-footer">
+        <p><strong>MoteurSentinelle v1.0.0</strong> — Prototype pour le Master Innovation Challenge (MIC) 2026.</p>
+        <p>Conçu pour la robustesse et la sobriété numérique en Afrique francophone.</p>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
