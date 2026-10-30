@@ -1,7 +1,8 @@
 /**
  * Client API pour MoteurSentinelle.
  */
-const API_BASE_URL = "http://localhost:8000/api";
+const isLocalDevelopment = ["localhost", "127.0.0.1"].includes(window.location.hostname);
+const API_BASE_URL = isLocalDevelopment ? "http://localhost:8000/api" : "/api";
 
 const MotorAPI = {
     async checkHealth() {

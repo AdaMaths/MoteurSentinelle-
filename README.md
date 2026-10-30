@@ -45,7 +45,15 @@ Faites un clic droit sur `frontend/index.html` > **Open in > Browser > Chrome / 
    pip install -r backend/requirements.txt
    python backend/app.py
    ```
-En déploiement, configurez `DATABASE_TYPE=firestore`, `FIREBASE_PROJECT_ID` et `FIREBASE_SERVICE_ACCOUNT_JSON` (le contenu JSON de la clé) comme variables secrètes de la plateforme. Ne publiez jamais cette clé. Sans `DATABASE_TYPE=firestore`, l'application conserve SQLite en local.
+### 8. Déployer l'application sur Vercel
+1. Importez le dépôt GitHub dans Vercel et laissez la **Root Directory** sur `./`.
+2. Dans **Project Settings > Environment Variables**, ajoutez :
+   - `DATABASE_TYPE` = `firestore`
+   - `FIREBASE_PROJECT_ID` = `moteursentinelle`
+   - `FIREBASE_SERVICE_ACCOUNT_JSON` = contenu complet de la clé JSON du compte de service Firebase
+3. Assurez-vous que Cloud Firestore est activé dans le projet Firebase, puis redéployez depuis Vercel.
+
+Le fichier `vercel.json` configure le frontend statique et l'API FastAPI. Le frontend utilise `/api` sur Vercel ; en local il continue d'appeler `http://localhost:8000/api`. La clé Firebase doit rester dans les variables secrètes Vercel et ne jamais être commitée. La base Firestore permet de conserver les données entre les exécutions serverless.
 
 ---
 
