@@ -45,6 +45,7 @@ Faites un clic droit sur `frontend/index.html` > **Open in > Browser > Chrome / 
    pip install -r backend/requirements.txt
    python backend/app.py
    ```
+   L'API démarre sans attendre une requête Firestore ; le moteur de démonstration est créé au premier chargement des moteurs. Les appels Firestore échouent après 10 secondes au maximum si la base est inaccessible.
 ### 8. Déployer l'application sur Vercel
 1. Importez le dépôt GitHub dans Vercel et laissez la **Root Directory** sur `./`.
 2. Dans **Project Settings > Environment Variables**, ajoutez :

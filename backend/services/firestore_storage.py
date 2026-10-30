@@ -3,10 +3,13 @@
 import json
 import os
 from datetime import datetime
+from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 import firebase_admin
 from firebase_admin import credentials, firestore
+
+FIRESTORE_REQUEST_TIMEOUT_SECONDS = 10
 
 
 class FirestoreStorage:
@@ -19,11 +22,20 @@ class FirestoreStorage:
             app = firebase_admin.get_app()
         except ValueError:
             service_account_json = os.getenv("FIREBASE_SERVICE_ACCOUNT_JSON")
-            certificate = (
-                credentials.Certificate(json.loads(service_account_json))
-                if service_account_json
-                else None
-            )
+            credential_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
+            if service_account_json:
+                certificate = credentials.Certificate(json.loads(service_account_json))
+            elif credential_path:
+                path = Path(credential_path)
+                if not path.is_absolute():
+                    path = Path(__file__).resolve().parents[2] / path
+                if not path.is_file():
+                    raise FileNotFoundError(
+                        f"Firebase service account file not found: {path}"
+                    )
+                certificate = credentials.Certificate(str(path))
+            else:
+                certificate = None
             app = firebase_admin.initialize_app(
                 credential=certificate,
                 options={"projectId": project_id},
@@ -32,7 +44,7 @@ class FirestoreStorage:
         self.db = firestore.client(app=app)
         self.motors = self.db.collection("motors")
         self.diagnostics = self.db.collection("diagnostics")
-        self._seed_demo_motor()
+        self._demo_motor_seeded = False
 
     def _seed_demo_motor(self) -> None:
         demo_motor = {
@@ -47,11 +59,17 @@ class FirestoreStorage:
             "date_enregistrement": datetime.now().isoformat(),
         }
         motor_ref = self.motors.document(demo_motor["id"])
-        if not motor_ref.get().exists:
-            motor_ref.set(demo_motor)
+        if not motor_ref.get(timeout=FIRESTORE_REQUEST_TIMEOUT_SECONDS).exists:
+            motor_ref.set(demo_motor, timeout=FIRESTORE_REQUEST_TIMEOUT_SECONDS)
 
     def list_motors(self) -> List[Dict[str, Any]]:
-        motors = [snapshot.to_dict() for snapshot in self.motors.stream()]
+        if not self._demo_motor_seeded:
+            self._seed_demo_motor()
+            self._demo_motor_seeded = True
+        motors = [
+            snapshot.to_dict()
+            for snapshot in self.motors.stream(timeout=FIRESTORE_REQUEST_TIMEOUT_SECONDS)
+        ]
         return sorted(
             motors,
             key=lambda motor: motor.get("date_enregistrement", ""),
@@ -76,11 +94,18 @@ class FirestoreStorage:
             "technicien": technicien,
             "statut": "Enregistré",
         }
-        self.diagnostics.document(diag_id).create(diagnostic)
+        self.diagnostics.document(diag_id).create(
+            diagnostic, timeout=FIRESTORE_REQUEST_TIMEOUT_SECONDS
+        )
         return {"id": diag_id, "date_diagnostic": now, "statut": "Enregistré"}
 
     def list_diagnostics(self) -> List[Dict[str, Any]]:
-        diagnostics = [snapshot.to_dict() for snapshot in self.diagnostics.stream()]
+        diagnostics = [
+            snapshot.to_dict()
+            for snapshot in self.diagnostics.stream(
+                timeout=FIRESTORE_REQUEST_TIMEOUT_SECONDS
+            )
+        ]
         return sorted(
             diagnostics,
             key=lambda diagnostic: diagnostic.get("date_diagnostic", ""),
