@@ -3,8 +3,6 @@ Chaque règle explicite ses conditions d'activation, ses indices favorables,
 les données manquantes et les contrôles recommandés.
 """
 
-from typing import List, Dict, Any
-
 RULES_DATABASE = [
     {
         "id": "RULE_SURCHARGE_MECANIQUE",

@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import uuid
 import os
 
-from api.models import DiagnosticRequest, MotorCreate
+from api.models import DiagnosticRequest
 from diagnostics.engine import DiagnosticEngine
 from diagnostics.simulator import PedagogicalSimulator
 from services.storage import DataStorage
