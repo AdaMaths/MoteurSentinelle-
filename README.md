@@ -36,22 +36,20 @@ L'API démarre sur `http://127.0.0.1:8000`. Vous pouvez tester la documentation 
 ### 6. Ouvrir l'application Web
 Faites un clic droit sur `frontend/index.html` > **Open in > Browser > Chrome / Edge**.
 
-### 7. Démarrer Directus en local (optionnel)
-Installez et démarrez Docker Desktop, puis créez `.env.directus` à partir de `.env.directus.example`. Remplacez les valeurs de démonstration par des secrets uniques avant de démarrer les services :
-```powershell
-Copy-Item .env.directus.example .env.directus
-docker compose --env-file .env.directus -f directus/docker-compose.yml up -d
-```
-Ouvrez `http://localhost:8055` et connectez-vous avec l'adresse et le mot de passe définis dans `.env.directus`. Pour arrêter Directus :
-```powershell
-docker compose --env-file .env.directus -f directus/docker-compose.yml down
-```
-Ne publiez jamais `.env.directus` : ce fichier contient les mots de passe et les clés secrètes locaux.
+### 7. Configurer Firebase Firestore (production, optionnel)
+1. Créez un projet Firebase et activez une base de données Cloud Firestore.
+2. Créez un compte de service avec les permissions minimales nécessaires, téléchargez sa clé JSON et placez-la dans `backend/firebase-service-account.json`. Ne publiez ni ne partagez jamais cette clé.
+3. Créez `.env` à partir de `.env.example`, définissez `DATABASE_TYPE=firestore` et votre `FIREBASE_PROJECT_ID`. Placez la clé JSON du compte de service dans `backend/firebase-service-account.json` (chemin indiqué par `GOOGLE_APPLICATION_CREDENTIALS`).
+4. Mettez à jour les dépendances et démarrez l'API :
+   ```powershell
+   pip install -r backend/requirements.txt
+   python backend/app.py
+   ```
+En déploiement, configurez `DATABASE_TYPE=firestore`, `FIREBASE_PROJECT_ID` et `FIREBASE_SERVICE_ACCOUNT_JSON` (le contenu JSON de la clé) comme variables secrètes de la plateforme. Ne publiez jamais cette clé. Sans `DATABASE_TYPE=firestore`, l'application conserve SQLite en local.
 
 ---
 
 ## 📂 Architecture du Projet
-- `backend/` : API FastAPI, moteur de règles électromécaniques déterministe, simulateur pédagogique, persistance SQLite.
+- `backend/` : API FastAPI, moteur de règles électromécaniques déterministe, simulateur pédagogique, persistance SQLite locale ou Firebase Firestore.
 - `frontend/` : Interface responsive en français (HTML5/CSS3/JS Vanilla), adaptée aux connexions mobiles d'atelier.
 - `docs/mic2026/` : Dossier complet pour le Master Innovation Challenge (Présentation, Résumé 172 mots, Pitch 7 min, 15 Questions/Réponses, Roadmap).
-- `directus/` : Modèle de données et fichier `docker-compose.yml` pour le déploiement Directus + PostgreSQL.

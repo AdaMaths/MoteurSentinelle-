@@ -1,3 +1,7 @@
+import os
+
+os.environ["DATABASE_TYPE"] = "sqlite"
+
 from fastapi.testclient import TestClient
 from app import app
 

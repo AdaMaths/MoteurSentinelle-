@@ -4,11 +4,14 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import uuid
 import os
+from dotenv import load_dotenv
 
 from api.models import DiagnosticRequest
 from diagnostics.engine import DiagnosticEngine
 from diagnostics.simulator import PedagogicalSimulator
 from services.storage import DataStorage
+
+load_dotenv()
 
 app = FastAPI(
     title="MoteurSentinelle API",
@@ -25,7 +28,16 @@ app.add_middleware(
 )
 
 engine = DiagnosticEngine()
-storage = DataStorage(db_path=os.getenv("DATABASE_PATH", "moteursentinelle.db"))
+database_type = os.getenv("DATABASE_TYPE", "sqlite").lower()
+
+if database_type == "sqlite":
+    storage = DataStorage(db_path=os.getenv("DATABASE_PATH", "moteursentinelle.db"))
+elif database_type == "firestore":
+    from services.firestore_storage import FirestoreStorage
+
+    storage = FirestoreStorage(project_id=os.getenv("FIREBASE_PROJECT_ID"))
+else:
+    raise ValueError(f"Unsupported DATABASE_TYPE: {database_type}")
 
 @app.get("/api/health")
 def health():
@@ -33,7 +45,7 @@ def health():
         "status": "healthy",
         "service": "MoteurSentinelle API",
         "version": "1.0.0",
-        "persistence": "SQLite Local Active"
+        "persistence": "Firestore" if database_type == "firestore" else "SQLite Local Active"
     }
 
 @app.get("/api/dashboard/stats")
